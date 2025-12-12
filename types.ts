@@ -1,4 +1,5 @@
 export type Language = 'en' | 'hi' | 'te';
+export type DietType = 'north_indian' | 'south_indian' | 'continental';
 
 export interface LocalizedString {
   en: string;
@@ -42,4 +43,4 @@ export interface WeeklyPlan {
   days: DayPlan[];
 }
 
-export type ViewState = 'daily' | 'weekly' | 'settings';
+export type ViewState = 'daily' | 'weekly' | 'grocery' | 'settings';

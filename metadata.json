@@ -1,5 +1,7 @@
 {
   "name": "RA Diet",
   "description": "A user-friendly, WCAG-compatible meal planning app designed for Rheumatoid Arthritis patients focusing on Indian anti-inflammatory diets. Features daily plans, next-day prep tracking, and bilingual support (English/Hindi).",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "geolocation"
+  ]
 }
