@@ -10,6 +10,16 @@ interface WeeklyViewProps {
 }
 
 const WeeklyView: React.FC<WeeklyViewProps> = ({ plan, language, onDaySelect }) => {
+  const getDisplayDate = (index: number) => {
+    const date = new Date();
+    const currentDay = date.getDay(); // 0 = Sun, 1 = Mon
+    const normalizedCurrent = currentDay === 0 ? 6 : currentDay - 1;
+    const diff = index - normalizedCurrent;
+    date.setDate(date.getDate() + diff);
+    const localeMap = { en: 'en-IN', hi: 'hi-IN', te: 'te-IN' };
+    return date.toLocaleDateString(localeMap[language], { month: 'short', day: 'numeric' });
+  };
+
   return (
     <div className="max-w-md mx-auto p-4 pb-24">
       <div className="flex items-center gap-2 mb-6">
@@ -28,7 +38,7 @@ const WeeklyView: React.FC<WeeklyViewProps> = ({ plan, language, onDaySelect }) 
             <h3 className="font-bold text-lg text-slate-900 mb-2 border-b border-slate-100 pb-2 flex justify-between items-center">
               <span className="group-hover:text-emerald-700 transition-colors">{day.dayName[language]}</span>
               <div className="flex items-center gap-2">
-                <span className="text-slate-400 text-sm font-normal">{day.date}</span>
+                <span className="text-slate-400 text-sm font-normal">{getDisplayDate(index)}</span>
                 <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-emerald-500" />
               </div>
             </h3>

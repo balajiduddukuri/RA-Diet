@@ -1,29 +1,43 @@
 import React, { useState } from 'react';
 import { Meal, Language } from '../types';
 import { UI_TRANSLATIONS } from '../constants';
-import { Clock, ChefHat, Info, ChevronDown, ChevronUp } from 'lucide-react';
+import { Clock, ChefHat, Info, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
 
 interface MealCardProps {
   meal: Meal;
   language: Language;
+  defaultExpanded?: boolean;
+  isCurrent?: boolean;
 }
 
-const MealCard: React.FC<MealCardProps> = ({ meal, language }) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+const MealCard: React.FC<MealCardProps> = ({ meal, language, defaultExpanded = false, isCurrent = false }) => {
+  const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
   return (
-    <article className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden mb-4 transition-all hover:shadow-md">
+    <article 
+      className={`bg-white rounded-xl shadow-sm border overflow-hidden mb-4 transition-all hover:shadow-md ${
+        isCurrent ? 'border-emerald-500 ring-1 ring-emerald-500 shadow-md' : 'border-slate-200'
+      }`}
+    >
       {/* Card Header (Always Visible) */}
       <button 
         onClick={() => setIsExpanded(!isExpanded)}
-        className="w-full text-left p-4 focus:outline-none focus:bg-slate-50"
+        className="w-full text-left p-4 focus:outline-none focus:bg-slate-50 relative"
         aria-expanded={isExpanded}
       >
         <div className="flex justify-between items-start">
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 mb-1 block">
-              {meal.type}
-            </span>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 block">
+                {meal.type}
+              </span>
+              {isCurrent && (
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase tracking-wide">
+                  <Sparkles className="w-3 h-3" />
+                  Now
+                </span>
+              )}
+            </div>
             <h3 className="text-lg font-bold text-slate-900 leading-tight mb-2">
               {meal.title[language]}
             </h3>

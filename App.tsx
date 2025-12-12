@@ -9,9 +9,15 @@ import GroceryView from './components/GroceryView';
 import SettingsView from './components/SettingsView';
 
 const App: React.FC = () => {
+  // Get current day of week (0=Mon, 6=Sun) to match plan structure
+  const getCurrentDayIndex = () => {
+    const day = new Date().getDay();
+    return day === 0 ? 6 : day - 1;
+  };
+
   const [language, setLanguage] = useState<Language>('te');
   const [currentView, setCurrentView] = useState<ViewState>('daily');
-  const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
+  const [selectedDayIndex, setSelectedDayIndex] = useState<number>(getCurrentDayIndex());
   const [dietType, setDietType] = useState<DietType>('north_indian');
 
   const handleDaySelect = (index: number) => {

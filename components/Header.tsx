@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Language } from '../types';
 import { UI_TRANSLATIONS } from '../constants';
-import { Clock, MapPin } from 'lucide-react';
+import { Clock, MapPin, Calendar } from 'lucide-react';
 
 interface HeaderProps {
   language: Language;
@@ -30,6 +30,9 @@ const Header: React.FC<HeaderProps> = ({ language }) => {
     }
   }, []);
 
+  const localeMap = { en: 'en-IN', hi: 'hi-IN', te: 'te-IN' };
+  const currentLocale = localeMap[language];
+
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
       <div className="max-w-md mx-auto px-4 py-3 flex justify-between items-center">
@@ -40,7 +43,13 @@ const Header: React.FC<HeaderProps> = ({ language }) => {
           <div className="flex items-center gap-1">
             <Clock className="w-3 h-3" />
             <span>
-              {currentTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              {currentTime.toLocaleTimeString(currentLocale, { hour: '2-digit', minute: '2-digit' })}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 mt-0.5">
+            <Calendar className="w-3 h-3" />
+            <span>
+              {currentTime.toLocaleDateString(currentLocale, { day: 'numeric', month: 'short', year: 'numeric' })}
             </span>
           </div>
           <div className="flex items-center gap-1 mt-0.5">
