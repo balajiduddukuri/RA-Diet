@@ -25,7 +25,7 @@ const PrepCard: React.FC<PrepCardProps> = ({ tasks, language }) => {
   if (tasks.length === 0) return null;
 
   return (
-    <section className="bg-indigo-50 rounded-xl border border-indigo-100 p-4 mb-6" aria-labelledby="prep-heading">
+    <section className="bg-indigo-50 rounded-xl border border-indigo-100 p-4 mt-8" aria-labelledby="prep-heading">
       <div className="flex items-center gap-2 mb-3">
         <CalendarClock className="w-5 h-5 text-indigo-600" />
         <h2 id="prep-heading" className="text-lg font-bold text-indigo-900">

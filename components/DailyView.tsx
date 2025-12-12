@@ -65,9 +65,6 @@ const DailyView: React.FC<DailyViewProps> = ({ plan, language, dayIndex }) => {
         </div>
       </div>
 
-      {/* Prep for Tomorrow Component */}
-      <PrepCard tasks={todayPlan.prepTimeline} language={language} />
-
       {/* Meals List */}
       <div className="space-y-4">
         {todayPlan.meals.map(meal => {
@@ -83,6 +80,9 @@ const DailyView: React.FC<DailyViewProps> = ({ plan, language, dayIndex }) => {
           );
         })}
       </div>
+
+      {/* Prep for Tomorrow Component */}
+      <PrepCard tasks={todayPlan.prepTimeline} language={language} />
     </div>
   );
 };

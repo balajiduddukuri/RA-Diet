@@ -80,7 +80,7 @@ const SettingsView: React.FC<SettingsViewProps> = ({ currentDiet, setDiet, langu
 
         <div className="text-center pt-8 pb-4">
           <p className="text-xs text-slate-400 font-medium">
-            {UI_TRANSLATIONS.author[language]}: BalajiDuddukuri
+            {UI_TRANSLATIONS.author[language]}: <a href="https://www.threads.net/@mr.dbalaji" target="_blank" rel="noopener noreferrer" className="hover:text-emerald-600 hover:underline transition-colors">Balaji Duddukuri</a>
           </p>
         </div>
       </div>
