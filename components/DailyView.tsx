@@ -3,23 +3,34 @@ import { Language, WeeklyPlan } from '../types';
 import { UI_TRANSLATIONS, MOTIVATIONAL_QUOTES } from '../constants';
 import MealCard from './MealCard';
 import PrepCard from './PrepCard';
-import { Sun, Quote } from 'lucide-react';
+import { Sun, Quote, Sparkles, MessageCircle } from 'lucide-react';
 
 interface DailyViewProps {
   plan: WeeklyPlan;
   language: Language;
   dayIndex: number;
+  onOpenChat: () => void;
 }
 
-const DailyView: React.FC<DailyViewProps> = ({ plan, language, dayIndex }) => {
+/**
+ * DailyView Component
+ * 
+ * Displays the meal plan for a specific day.
+ * Features:
+ * - Highlights current meal based on time of day
+ * - Shows prep tasks for the next day
+ * - Displays a daily motivational quote
+ */
+const DailyView: React.FC<DailyViewProps> = ({ plan, language, dayIndex, onOpenChat }) => {
   // Use the passed dayIndex to select the plan
   const todayPlan = plan.days[dayIndex];
   
   // State to force re-render on minute change for time-sensitive UI
   const [now, setNow] = useState(new Date());
 
+  // Update time every minute to keep "Current Meal" status accurate
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 60000); // Update every minute
+    const timer = setInterval(() => setNow(new Date()), 60000); 
     return () => clearInterval(timer);
   }, []);
 
@@ -43,6 +54,7 @@ const DailyView: React.FC<DailyViewProps> = ({ plan, language, dayIndex }) => {
   const isToday = dayIndex === getTodayIndex();
   const currentHour = now.getHours();
 
+  // Helper to determine if a meal is currently active based on time ranges
   const isMealActive = (type: string) => {
     if (!isToday) return false;
     const h = currentHour;
@@ -99,6 +111,23 @@ const DailyView: React.FC<DailyViewProps> = ({ plan, language, dayIndex }) => {
 
       {/* Prep for Tomorrow Component */}
       <PrepCard tasks={todayPlan.prepTimeline} language={language} />
+
+      {/* Ask AI Card */}
+      <button 
+        onClick={onOpenChat}
+        className="w-full mt-6 bg-gradient-to-br from-emerald-600 to-teal-700 rounded-xl p-5 shadow-lg shadow-emerald-600/20 text-white flex items-center justify-between group active:scale-[0.98] transition-all"
+      >
+        <div className="text-left">
+          <div className="flex items-center gap-2 mb-1">
+            <Sparkles className="w-4 h-4 text-emerald-200" />
+            <h3 className="font-bold text-lg leading-none">{UI_TRANSLATIONS.askAiBtn[language]}</h3>
+          </div>
+          <p className="text-emerald-100 text-sm font-medium opacity-90">{UI_TRANSLATIONS.askAiDesc[language]}</p>
+        </div>
+        <div className="bg-white/20 p-2.5 rounded-full backdrop-blur-sm group-hover:bg-white/30 transition-colors">
+          <MessageCircle className="w-6 h-6 text-white" />
+        </div>
+      </button>
     </div>
   );
 };

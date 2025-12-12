@@ -38,7 +38,14 @@ export const UI_TRANSLATIONS: Record<string, LocalizedString> = {
   mealBreakfast: { en: "Breakfast", hi: "नाश्ता", te: "అల్పాహారం" },
   mealLunch: { en: "Lunch", hi: "दोपहर का खाना", te: "మధ్యాహ్న భోజనం" },
   mealSnack: { en: "Snack", hi: "स्नैक", te: "స్నాక్" },
-  mealDinner: { en: "Dinner", hi: "रात का खाना", te: "రాత్రి భోజనం" }
+  mealDinner: { en: "Dinner", hi: "रात का खाना", te: "రాత్రి భోజనం" },
+  // Chat
+  chatTitle: { en: "Diet Assistant", hi: "डाइट असिस्टेंट", te: "డైట్ అసిస్టెంట్" },
+  chatPlaceholder: { en: "Ask about food, nutrition...", hi: "भोजन, पोषण के बारे में पूछें...", te: "ఆహారం, పోషకాహారం గురించి అడగండి..." },
+  chatThinking: { en: "Thinking...", hi: "सोच रहा हूँ...", te: "ఆలోచిస్తోంది..." },
+  chatWelcome: { en: "Hello! I can help you with RA-friendly diet tips and ingredient benefits.", hi: "नमस्ते! मैं आपको आर.ए. के लिए आहार सुझावों में मदद कर सकता हूं।", te: "నమస్తే! నేను మీకు RA-అనుకూల ఆహార చిట్కాలతో సహాయం చేయగలను." },
+  askAiBtn: { en: "Ask AI RA Diet Expert", hi: "AI RA डाइट एक्सपर्ट से पूछें", te: "AI RA డైట్ నిపుణుడిని అడగండి" },
+  askAiDesc: { en: "Get instant answers about ingredients & nutrition", hi: "सामग्री और पोषण के बारे में तुरंत उत्तर प्राप्त करें", te: "పదార్థాలు & పోషకాహారం గురించి తక్షణ సమాధానాలు పొందండి" }
 };
 
 export const MOTIVATIONAL_QUOTES: LocalizedString[] = [

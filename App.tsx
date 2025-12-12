@@ -7,7 +7,16 @@ import DailyView from './components/DailyView';
 import WeeklyView from './components/WeeklyView';
 import GroceryView from './components/GroceryView';
 import SettingsView from './components/SettingsView';
+import ChatInterface from './components/ChatInterface';
 
+/**
+ * Main App Component
+ * 
+ * Orchestrates the overall application layout and state management.
+ * - Manages global state: language, current view, selected day, diet type, and dietary preference.
+ * - Handles the logic for substituting non-veg meals with veg alternatives based on user preference.
+ * - Renders the main content area, header, bottom navigation, and chat interface.
+ */
 const App: React.FC = () => {
   // Get current day of week (0=Mon, 6=Sun) to match plan structure
   const getCurrentDayIndex = () => {
@@ -20,6 +29,7 @@ const App: React.FC = () => {
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(getCurrentDayIndex());
   const [dietType, setDietType] = useState<DietType>('north_indian');
   const [dietaryPreference, setDietaryPreference] = useState<DietaryPreference>('non_veg');
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleDaySelect = (index: number) => {
     setSelectedDayIndex(index);
@@ -56,7 +66,7 @@ const App: React.FC = () => {
   }, [dietType, dietaryPreference]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 relative">
       <Header language={language} />
       
       <main className="pt-2 pb-20">
@@ -65,6 +75,7 @@ const App: React.FC = () => {
             plan={currentPlan} 
             language={language} 
             dayIndex={selectedDayIndex}
+            onOpenChat={() => setIsChatOpen(true)}
           />
         )}
         {currentView === 'weekly' && (
@@ -91,6 +102,12 @@ const App: React.FC = () => {
           />
         )}
       </main>
+
+      <ChatInterface 
+        language={language} 
+        isOpen={isChatOpen}
+        onToggle={setIsChatOpen}
+      />
 
       <BottomNav 
         view={currentView} 
