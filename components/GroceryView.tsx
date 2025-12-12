@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { WeeklyPlan, Language } from '../types';
 import { UI_TRANSLATIONS } from '../constants';
-import { ShoppingBasket, Copy, Check } from 'lucide-react';
+import { ShoppingBasket, Copy, Check, Share2 } from 'lucide-react';
 
 interface GroceryViewProps {
   plan: WeeklyPlan;
@@ -42,16 +42,35 @@ const GroceryView: React.FC<GroceryViewProps> = ({ plan, language }) => {
     setCheckedItems(newSet);
   };
 
-  const handleCopy = () => {
+  const getListText = () => {
     const text = aggregatedIngredients
       .map(([name, qtys]) => `- ${name} (${qtys.join(', ')})`)
       .join('\n');
-    
-    navigator.clipboard.writeText(
-      `${UI_TRANSLATIONS.groceryList[language]}\n\n${text}`
-    );
+    return `${UI_TRANSLATIONS.groceryList[language]}\n\n${text}`;
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(getListText());
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleShare = async () => {
+    const shareData = {
+      title: UI_TRANSLATIONS.groceryList[language],
+      text: `${getListText()}\n\nShared via RA Diet App`
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.error('Error sharing', err);
+      }
+    } else {
+      handleCopy();
+      // Optionally notify user that sharing wasn't supported so we copied instead
+    }
   };
 
   return (
@@ -61,13 +80,23 @@ const GroceryView: React.FC<GroceryViewProps> = ({ plan, language }) => {
           <ShoppingBasket className="w-6 h-6 text-emerald-600" />
           <h2 className="text-2xl font-bold text-slate-900">{UI_TRANSLATIONS.groceryList[language]}</h2>
         </div>
-        <button
-          onClick={handleCopy}
-          className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white rounded-lg text-sm font-medium active:scale-95 transition-transform"
-        >
-          {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-          <span>{copied ? UI_TRANSLATIONS.copied[language] : UI_TRANSLATIONS.copy[language]}</span>
-        </button>
+        
+        <div className="flex gap-2">
+          <button
+            onClick={handleCopy}
+            className="flex items-center justify-center p-2 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 active:scale-95 transition-all"
+            aria-label="Copy to clipboard"
+          >
+            {copied ? <Check className="w-5 h-5 text-emerald-600" /> : <Copy className="w-5 h-5" />}
+          </button>
+          <button
+            onClick={handleShare}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 text-white rounded-lg text-sm font-medium active:scale-95 transition-transform"
+          >
+            <Share2 className="w-4 h-4" />
+            <span>{UI_TRANSLATIONS.share[language]}</span>
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">

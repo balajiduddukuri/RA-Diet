@@ -7,6 +7,7 @@ import DailyView from './components/DailyView';
 import WeeklyView from './components/WeeklyView';
 import GroceryView from './components/GroceryView';
 import SettingsView from './components/SettingsView';
+import GuideView from './components/GuideView';
 import ChatInterface from './components/ChatInterface';
 
 /**
@@ -28,7 +29,7 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('daily');
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(getCurrentDayIndex());
   const [dietType, setDietType] = useState<DietType>('north_indian');
-  const [dietaryPreference, setDietaryPreference] = useState<DietaryPreference>('non_veg');
+  const [dietaryPreference, setDietaryPreference] = useState<DietaryPreference>('veg');
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   const handleDaySelect = (index: number) => {
@@ -88,6 +89,11 @@ const App: React.FC = () => {
         {currentView === 'grocery' && (
           <GroceryView
             plan={currentPlan}
+            language={language}
+          />
+        )}
+        {currentView === 'guide' && (
+          <GuideView
             language={language}
           />
         )}

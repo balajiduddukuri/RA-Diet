@@ -19,9 +19,11 @@ export const UI_TRANSLATIONS: Record<string, LocalizedString> = {
   navWeekly: { en: "Week", hi: "सप्ताह", te: "వారం" },
   navGrocery: { en: "Grocery", hi: "किराना", te: "సరుకులు" },
   navSettings: { en: "Settings", hi: "सेटिंग्स", te: "సెట్టింగులు" },
+  navGuide: { en: "Guide", hi: "गाइड", te: "గైడ్" },
   groceryList: { en: "Shopping List", hi: "खरीदारी सूची", te: "షాపింగ్ జాబితా" },
   copy: { en: "Copy", hi: "कॉपी", te: "కాపీ" },
   copied: { en: "Copied!", hi: "कॉपी हो गया!", te: "కాపీ చేయబడింది!" },
+  share: { en: "Share", hi: "शेयर", te: "షేర్" },
   guidance: { en: "Why this helps?", hi: "यह कैसे मदद करता है?", te: "ఇది ఎలా సహాయపడుతుంది?" },
   tapToView: { en: "Tap to view full plan", hi: "पूरा प्लान देखने के लिए टैप करें", te: "పూర్తి ప్లాన్ చూడటానికి నొక్కండి" },
   selectDiet: { en: "Select Diet Preference", hi: "आहार प्राथमिकता चुनें", te: "ఆహార ప్రాధాన్యతను ఎంచుకోండి" },
@@ -34,6 +36,17 @@ export const UI_TRANSLATIONS: Record<string, LocalizedString> = {
   dietaryPref: { en: "Dietary Preference", hi: "आहार प्राथमिकता", te: "ఆహార ప్రాధాన్యత" },
   vegOnly: { en: "Vegetarian Only", hi: "केवल शाकाहारी", te: "శాకాహారం మాత్రమే" },
   nonVegIncluded: { en: "Includes Non-Veg", hi: "मांसाहारी शामिल", te: "మాంసాహారం ఉంది" },
+  // Guide Section
+  guideTitle: { en: "App Guide", hi: "ऐप गाइड", te: "యాప్ గైడ్" },
+  guideIntro: { en: "Welcome to RA Diet. Here's how to make the most of your anti-inflammatory meal planner.", hi: "RA डाइट में आपका स्वागत है। यहां बताया गया है कि आप अपने भोजन योजनाकार का सर्वोत्तम उपयोग कैसे कर सकते हैं।", te: "RA డైట్‌కు స్వాగతం. మీ యాంటీ ఇన్ఫ్లమేటరీ మీల్ ప్లానర్‌ను ఎలా ఉపయోగించుకోవాలో ఇక్కడ ఉంది." },
+  guideDailyTitle: { en: "Daily Meals", hi: "दैनिक भोजन", te: "రోజువారీ భోజనం" },
+  guideDailyDesc: { en: "View breakfast, lunch, snacks, and dinner. The current meal is highlighted. Tap any meal to see recipe details.", hi: "नाश्ता, दोपहर का भोजन, स्नैक्स और रात का खाना देखें। वर्तमान भोजन हाइलाइट किया गया है। विवरण देखने के लिए टैप करें।", te: "అల్పాహారం, మధ్యాహ్న భోజనం, స్నాక్స్ మరియు రాత్రి భోజనం చూడండి. ప్రస్తుత భోజనం హైలైట్ చేయబడింది." },
+  guidePrepTitle: { en: "Tomorrow's Prep", hi: "कल की तैयारी", te: "రేపటి తయారీ" },
+  guidePrepDesc: { en: "Check the 'Prep for Tomorrow' section at the bottom of the daily view to see what you need to soak or chop tonight.", hi: "आज रात क्या भिगोना या काटना है, यह देखने के लिए 'कल की तैयारी' अनुभाग देखें।", te: "ఈ రాత్రి ఏమి నానబెట్టాలి లేదా తరగాలి అని చూడటానికి 'రేపటి తయారీ' విభాగాన్ని తనిఖీ చేయండి." },
+  guideGroceryTitle: { en: "Shopping List", hi: "खरीदारी सूची", te: "షాపింగ్ జాబితా" },
+  guideGroceryDesc: { en: "The Grocery tab automatically aggregates all ingredients for the week. You can check off items you already have.", hi: "किराना टैब स्वचालित रूप से सप्ताह के लिए सभी सामग्री एकत्र करता है।", te: "సరుకుల ట్యాబ్ వారం మొత్తానికి కావలసిన అన్ని పదార్థాలను ఆటోమేటిక్‌గా జాబితా చేస్తుంది." },
+  guideAiTitle: { en: "Ask AI Expert", hi: "AI विशेषज्ञ से पूछें", te: "AI నిపుణుడిని అడగండి" },
+  guideAiDesc: { en: "Use the chat button or voice search to ask nutrition questions like 'Is ginger good for RA?'", hi: "पोषण संबंधी प्रश्न पूछने के लिए चैट बटन या वॉयस सर्च का उपयोग करें।", te: "పోషకాహార ప్రశ్నలు అడగడానికి చాట్ బటన్ లేదా వాయిస్ సెర్చ్ ఉపయోగించండి." },
   // Meal Types
   mealBreakfast: { en: "Breakfast", hi: "नाश्ता", te: "అల్పాహారం" },
   mealLunch: { en: "Lunch", hi: "दोपहर का खाना", te: "మధ్యాహ్న భోజనం" },
@@ -790,7 +803,7 @@ const CONTINENTAL_PLAN: WeeklyPlan = {
           ingredients: [
             { name: { en: "Apple", hi: "सेब", te: "ఆపిల్" }, qty: { en: "1", hi: "1", te: "1" } },
             { name: { en: "Walnuts", hi: "अखरोट", te: "వాల్‌నట్స్" }, qty: { en: "Handful", hi: "मुट्ठी भर", te: "గుప్పెడు" } }
-          ],
+           ],
           steps: [{ en: "Slice apple and enjoy with nuts.", hi: "सेब काटें और मेवों के साथ खाएं।", te: "ఆపిల్ ముక్కలు చేసి నట్స్‌తో తినండి." }]
         },
         {

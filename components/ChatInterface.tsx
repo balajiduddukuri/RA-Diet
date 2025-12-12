@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { GoogleGenAI, Chat } from "@google/genai";
 import { Language } from '../types';
 import { UI_TRANSLATIONS } from '../constants';
-import { MessageCircle, X, Send, Sparkles } from 'lucide-react';
+import { MessageCircle, X, Send, Sparkles, Mic } from 'lucide-react';
 
 interface ChatInterfaceProps {
   language: Language;
@@ -28,12 +28,15 @@ interface Message {
  * - Persisted chat session during component lifecycle
  * - Auto-language switching based on app setting
  * - Streaming-like UI state (Thinking...)
+ * - Voice input using Web Speech API
  */
 const ChatInterface: React.FC<ChatInterfaceProps> = ({ language, isOpen, onToggle }) => {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const recognitionRef = useRef<any>(null);
   
   // Use a ref to persist the chat session across renders without causing re-renders
   const chatSessionRef = useRef<Chat | null>(null);
@@ -85,6 +88,75 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ language, isOpen, onToggl
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, isOpen]);
+
+  // Clean up speech recognition on unmount
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, []);
+
+  /**
+   * Toggles voice recognition
+   */
+  const toggleListening = () => {
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) {
+      alert("Voice input is not supported in this browser. Please try Chrome, Edge, or Safari.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognitionRef.current = recognition;
+
+    // Set language for recognition
+    if (language === 'hi') {
+      recognition.lang = 'hi-IN';
+    } else if (language === 'te') {
+      recognition.lang = 'te-IN';
+    } else {
+      recognition.lang = 'en-IN';
+    }
+
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      setIsListening(true);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      if (transcript) {
+        setInput((prev) => (prev ? `${prev} ${transcript}` : transcript));
+      }
+    };
+
+    recognition.onerror = (event: any) => {
+      console.error("Speech recognition error", event.error);
+      setIsListening(false);
+    };
+
+    try {
+      recognition.start();
+    } catch (err) {
+      console.error("Failed to start speech recognition", err);
+      setIsListening(false);
+    }
+  };
 
   /**
    * Handles sending a message to the Gemini API.
@@ -193,6 +265,21 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({ language, isOpen, onToggl
                   style={{ minHeight: '44px' }}
                   aria-label="Message input"
                 />
+                
+                {/* Voice Input Button */}
+                <button
+                  onClick={toggleListening}
+                  className={`p-2 rounded-xl mb-0.5 transition-all ${
+                    isListening
+                      ? 'bg-red-50 text-red-600 animate-pulse'
+                      : 'text-slate-400 hover:bg-slate-200 hover:text-slate-600'
+                  }`}
+                  aria-label={isListening ? "Stop listening" : "Start listening"}
+                  title="Voice Search"
+                >
+                  <Mic className="w-5 h-5" />
+                </button>
+
                 <button 
                   onClick={handleSend}
                   disabled={!input.trim() || isLoading}

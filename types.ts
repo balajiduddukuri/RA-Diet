@@ -80,4 +80,4 @@ export interface WeeklyPlan {
 /**
  * Application view states for navigation.
  */
-export type ViewState = 'daily' | 'weekly' | 'grocery' | 'settings';
+export type ViewState = 'daily' | 'weekly' | 'grocery' | 'settings' | 'guide';

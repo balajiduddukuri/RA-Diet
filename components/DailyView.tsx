@@ -3,7 +3,7 @@ import { Language, WeeklyPlan } from '../types';
 import { UI_TRANSLATIONS, MOTIVATIONAL_QUOTES } from '../constants';
 import MealCard from './MealCard';
 import PrepCard from './PrepCard';
-import { Sun, Quote, Sparkles, MessageCircle } from 'lucide-react';
+import { Sun, Quote, Sparkles, MessageCircle, Share2 } from 'lucide-react';
 
 interface DailyViewProps {
   plan: WeeklyPlan;
@@ -69,18 +69,50 @@ const DailyView: React.FC<DailyViewProps> = ({ plan, language, dayIndex, onOpenC
     return false;
   };
 
+  const handleShare = async () => {
+    const mealSummary = todayPlan.meals.map(m => 
+      `${m.type.toUpperCase()}: ${m.title[language]} (${m.calories} kcal)`
+    ).join('\n');
+
+    const shareData = {
+      title: UI_TRANSLATIONS.today[language],
+      text: `${UI_TRANSLATIONS.today[language]} - ${getDisplayDate()}\n\n${mealSummary}\n\nShared via RA Diet App`
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.error('Error sharing', err);
+      }
+    } else {
+      // Fallback to clipboard
+      navigator.clipboard.writeText(shareData.text);
+      alert(UI_TRANSLATIONS.copied[language]);
+    }
+  };
+
   // Select quote based on day index to rotate daily
   const dailyQuote = MOTIVATIONAL_QUOTES[dayIndex % MOTIVATIONAL_QUOTES.length];
 
   return (
     <div className="max-w-md mx-auto p-4 pb-24">
-      {/* Date Header */}
-      <div className="flex items-center gap-2 mb-6">
-        <Sun className="w-6 h-6 text-amber-500" />
-        <div>
-          <h2 className="text-2xl font-bold text-slate-900">{UI_TRANSLATIONS.today[language]}</h2>
-          <p className="text-slate-500 text-sm font-medium">{getDisplayDate()}</p>
+      {/* Header */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <Sun className="w-6 h-6 text-amber-500" />
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900">{UI_TRANSLATIONS.today[language]}</h2>
+            <p className="text-slate-500 text-sm font-medium">{getDisplayDate()}</p>
+          </div>
         </div>
+        <button
+          onClick={handleShare}
+          className="p-2 bg-emerald-50 text-emerald-700 rounded-full hover:bg-emerald-100 active:scale-95 transition-transform"
+          aria-label="Share plan"
+        >
+          <Share2 className="w-5 h-5" />
+        </button>
       </div>
 
       {/* Motivational Quote */}

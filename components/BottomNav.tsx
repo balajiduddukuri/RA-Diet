@@ -1,7 +1,7 @@
 import React from 'react';
 import { ViewState, Language } from '../types';
 import { UI_TRANSLATIONS } from '../constants';
-import { CalendarCheck, CalendarRange, ShoppingBasket, Settings } from 'lucide-react';
+import { CalendarCheck, CalendarRange, ShoppingBasket, Settings, BookOpen } from 'lucide-react';
 
 interface BottomNavProps {
   view: ViewState;
@@ -15,7 +15,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ view, setView, language }) => {
       <div className="max-w-md mx-auto flex justify-around items-end pb-1">
         <button
           onClick={() => setView('daily')}
-          className={`flex flex-col items-center p-2 min-w-[64px] rounded-lg transition-colors ${
+          className={`flex flex-col items-center p-2 min-w-[56px] rounded-lg transition-colors ${
             view === 'daily' ? 'text-emerald-700 bg-emerald-50' : 'text-slate-500 hover:bg-slate-50'
           }`}
           aria-current={view === 'daily' ? 'page' : undefined}
@@ -25,7 +25,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ view, setView, language }) => {
         </button>
         <button
           onClick={() => setView('weekly')}
-          className={`flex flex-col items-center p-2 min-w-[64px] rounded-lg transition-colors ${
+          className={`flex flex-col items-center p-2 min-w-[56px] rounded-lg transition-colors ${
             view === 'weekly' ? 'text-emerald-700 bg-emerald-50' : 'text-slate-500 hover:bg-slate-50'
           }`}
           aria-current={view === 'weekly' ? 'page' : undefined}
@@ -35,7 +35,7 @@ const BottomNav: React.FC<BottomNavProps> = ({ view, setView, language }) => {
         </button>
         <button
           onClick={() => setView('grocery')}
-          className={`flex flex-col items-center p-2 min-w-[64px] rounded-lg transition-colors ${
+          className={`flex flex-col items-center p-2 min-w-[56px] rounded-lg transition-colors ${
             view === 'grocery' ? 'text-emerald-700 bg-emerald-50' : 'text-slate-500 hover:bg-slate-50'
           }`}
           aria-current={view === 'grocery' ? 'page' : undefined}
@@ -44,8 +44,18 @@ const BottomNav: React.FC<BottomNavProps> = ({ view, setView, language }) => {
           <span className="text-[10px] font-medium">{UI_TRANSLATIONS.navGrocery[language]}</span>
         </button>
         <button
+          onClick={() => setView('guide')}
+          className={`flex flex-col items-center p-2 min-w-[56px] rounded-lg transition-colors ${
+            view === 'guide' ? 'text-emerald-700 bg-emerald-50' : 'text-slate-500 hover:bg-slate-50'
+          }`}
+          aria-current={view === 'guide' ? 'page' : undefined}
+        >
+          <BookOpen className="w-5 h-5 mb-1" />
+          <span className="text-[10px] font-medium">{UI_TRANSLATIONS.navGuide[language]}</span>
+        </button>
+        <button
           onClick={() => setView('settings')}
-          className={`flex flex-col items-center p-2 min-w-[64px] rounded-lg transition-colors ${
+          className={`flex flex-col items-center p-2 min-w-[56px] rounded-lg transition-colors ${
             view === 'settings' ? 'text-emerald-700 bg-emerald-50' : 'text-slate-500 hover:bg-slate-50'
           }`}
           aria-current={view === 'settings' ? 'page' : undefined}
