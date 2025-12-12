@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Language, ViewState, DietType } from './types';
+import React, { useState, useMemo } from 'react';
+import { Language, ViewState, DietType, DietaryPreference } from './types';
 import { PLANS } from './constants';
 import Header from './components/Header';
 import BottomNav from './components/BottomNav';
@@ -19,6 +19,7 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState<ViewState>('daily');
   const [selectedDayIndex, setSelectedDayIndex] = useState<number>(getCurrentDayIndex());
   const [dietType, setDietType] = useState<DietType>('north_indian');
+  const [dietaryPreference, setDietaryPreference] = useState<DietaryPreference>('non_veg');
 
   const handleDaySelect = (index: number) => {
     setSelectedDayIndex(index);
@@ -26,7 +27,33 @@ const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const currentPlan = PLANS[dietType];
+  // Derive the current plan based on diet type and dietary preference
+  const currentPlan = useMemo(() => {
+    const rawPlan = PLANS[dietType];
+    
+    // If user allows non-veg, return plan as is
+    if (dietaryPreference === 'non_veg') return rawPlan;
+
+    // If preference is 'veg', replace non-veg meals with their alternatives
+    return {
+      ...rawPlan,
+      days: rawPlan.days.map(day => ({
+        ...day,
+        meals: day.meals.map(meal => {
+          if (meal.isNonVeg && meal.vegAlternative) {
+            // Swap with vegetarian alternative
+            return { 
+              ...meal.vegAlternative, 
+              // Keep original ID to ensure keys remain stable if needed, 
+              // or use alt ID. Using alt ID is safer for uniqueness.
+              id: meal.vegAlternative.id || `${meal.id}_veg` 
+            };
+          }
+          return meal;
+        })
+      }))
+    };
+  }, [dietType, dietaryPreference]);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -59,6 +86,8 @@ const App: React.FC = () => {
             setDiet={setDietType}
             language={language}
             setLanguage={setLanguage}
+            dietaryPreference={dietaryPreference}
+            setDietaryPreference={setDietaryPreference}
           />
         )}
       </main>

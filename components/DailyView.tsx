@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Language, WeeklyPlan } from '../types';
-import { UI_TRANSLATIONS } from '../constants';
+import { UI_TRANSLATIONS, MOTIVATIONAL_QUOTES } from '../constants';
 import MealCard from './MealCard';
 import PrepCard from './PrepCard';
-import { Sun } from 'lucide-react';
+import { Sun, Quote } from 'lucide-react';
 
 interface DailyViewProps {
   plan: WeeklyPlan;
@@ -45,14 +45,20 @@ const DailyView: React.FC<DailyViewProps> = ({ plan, language, dayIndex }) => {
 
   const isMealActive = (type: string) => {
     if (!isToday) return false;
+    const h = currentHour;
     // Breakfast: 4 AM - 11 AM
-    if (type === 'breakfast' && currentHour >= 4 && currentHour < 11) return true;
-    // Lunch: 11 AM - 4 PM
-    if (type === 'lunch' && currentHour >= 11 && currentHour < 16) return true;
-    // Dinner: 4 PM - 11 PM
-    if (type === 'dinner' && currentHour >= 16 && currentHour < 23) return true;
+    if (type === 'breakfast') return h >= 4 && h < 11;
+    // Lunch: 11 AM - 3 PM
+    if (type === 'lunch') return h >= 11 && h < 15;
+    // Snack: 3 PM - 7 PM (15:00 - 19:00)
+    if (type === 'snack') return h >= 15 && h < 19;
+    // Dinner: 7 PM - 11 PM (19:00 - 23:00)
+    if (type === 'dinner') return h >= 19 && h < 23;
     return false;
   };
+
+  // Select quote based on day index to rotate daily
+  const dailyQuote = MOTIVATIONAL_QUOTES[dayIndex % MOTIVATIONAL_QUOTES.length];
 
   return (
     <div className="max-w-md mx-auto p-4 pb-24">
@@ -62,6 +68,16 @@ const DailyView: React.FC<DailyViewProps> = ({ plan, language, dayIndex }) => {
         <div>
           <h2 className="text-2xl font-bold text-slate-900">{UI_TRANSLATIONS.today[language]}</h2>
           <p className="text-slate-500 text-sm font-medium">{getDisplayDate()}</p>
+        </div>
+      </div>
+
+      {/* Motivational Quote */}
+      <div className="bg-emerald-50 border border-emerald-100 rounded-xl p-4 mb-6 relative overflow-hidden">
+        <Quote className="absolute top-2 right-2 w-8 h-8 text-emerald-100 rotate-12" />
+        <div className="relative z-10">
+          <p className="text-emerald-800 font-medium italic text-sm leading-relaxed">
+            "{dailyQuote[language]}"
+          </p>
         </div>
       </div>
 

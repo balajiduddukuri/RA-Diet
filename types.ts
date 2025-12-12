@@ -1,5 +1,6 @@
 export type Language = 'en' | 'hi' | 'te';
 export type DietType = 'north_indian' | 'south_indian' | 'continental';
+export type DietaryPreference = 'veg' | 'non_veg';
 
 export interface LocalizedString {
   en: string;
@@ -16,12 +17,15 @@ export interface Meal {
   id: string;
   type: 'breakfast' | 'lunch' | 'dinner' | 'snack';
   title: LocalizedString;
+  calories: number; // Added calories
   prepTimeMinutes: number;
   cookTimeMinutes: number;
   tags: string[]; // e.g., "High Omega-3", "Turmeric"
   ingredients: Ingredient[];
   steps: LocalizedString[];
   nutritionNote?: LocalizedString;
+  isNonVeg?: boolean;
+  vegAlternative?: Meal;
 }
 
 export interface PrepTask {

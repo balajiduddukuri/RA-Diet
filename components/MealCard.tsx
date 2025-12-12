@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Meal, Language } from '../types';
 import { UI_TRANSLATIONS } from '../constants';
-import { Clock, ChefHat, Info, ChevronDown, ChevronUp, Sparkles } from 'lucide-react';
+import { Clock, ChefHat, Info, ChevronDown, ChevronUp, Sparkles, Flame } from 'lucide-react';
 
 interface MealCardProps {
   meal: Meal;
@@ -12,6 +12,16 @@ interface MealCardProps {
 
 const MealCard: React.FC<MealCardProps> = ({ meal, language, defaultExpanded = false, isCurrent = false }) => {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+
+  const getMealTypeLabel = (type: string) => {
+    switch (type) {
+      case 'breakfast': return UI_TRANSLATIONS.mealBreakfast[language];
+      case 'lunch': return UI_TRANSLATIONS.mealLunch[language];
+      case 'snack': return UI_TRANSLATIONS.mealSnack[language];
+      case 'dinner': return UI_TRANSLATIONS.mealDinner[language];
+      default: return type;
+    }
+  };
 
   return (
     <article 
@@ -29,7 +39,7 @@ const MealCard: React.FC<MealCardProps> = ({ meal, language, defaultExpanded = f
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 block">
-                {meal.type}
+                {getMealTypeLabel(meal.type)}
               </span>
               {isCurrent && (
                 <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700 uppercase tracking-wide">
@@ -61,6 +71,10 @@ const MealCard: React.FC<MealCardProps> = ({ meal, language, defaultExpanded = f
           <div className="flex items-center gap-1">
             <ChefHat className="w-4 h-4" />
             <span>{UI_TRANSLATIONS.cookTime[language]}: {meal.cookTimeMinutes}{UI_TRANSLATIONS.mins[language]}</span>
+          </div>
+          <div className="flex items-center gap-1 text-orange-600 font-medium">
+            <Flame className="w-4 h-4" />
+            <span>{meal.calories} kcal</span>
           </div>
         </div>
       </button>
